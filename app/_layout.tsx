@@ -1,24 +1,30 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native/types';
+import { Ionicons } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native';
+import { Router, useRouter } from 'expo-router'
+import { useNavigation } from '@react-navigation/native';
 
-import { useColorScheme } from '@/components/useColorScheme';
 
 export {
-  // Catch any errors thrown by the Layout component.
+ 
   ErrorBoundary,
 } from 'expo-router';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
+  
   initialRouteName: '(tabs)',
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+
 SplashScreen.preventAutoHideAsync();
+
+
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -26,7 +32,11 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
+
+
+
+
+  
   useEffect(() => {
     if (error) throw error;
   }, [error]);
@@ -44,15 +54,44 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
-  );
+function newUserCheck() { //check if new user or has previously logged in, show startuppage and login screen if true
+    return true;
+}
+
+/* headerLeft: () => (
+<TouchableOpacity onPress={() => router.back()}>
+    <Ionicons name="close-outline" size={25} />
+</TouchableOpacity>
+                   )*/
+
+
+
+
+
+
+
+
+
+        //show startuppage if new or else show tab screens if already logged in
+function RootLayoutNav() {
+    const router = useRouter();
+
+    return (
+    
+        <Stack>
+            
+
+            <Stack.Screen name="startupPage" options={{
+                presentation: 'modal',
+                title: 'Welcome',
+            }}
+
+            />
+
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+
+        </Stack>
+
+    );
 }
