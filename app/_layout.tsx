@@ -1,15 +1,13 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native/types';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Link, router, useRouter } from "expo-router";
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native';
-import { Router, useRouter } from 'expo-router'
-import { useNavigation } from '@react-navigation/native';
-
 
 export {
  
@@ -18,7 +16,7 @@ export {
 
 export const unstable_settings = {
   
-  initialRouteName: '(tabs)',
+  initialRouteName: 'startupPage',
 };
 
 
@@ -32,11 +30,6 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
-
-
-
-
-  
   useEffect(() => {
     if (error) throw error;
   }, [error]);
@@ -51,7 +44,10 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+
+
+
+    return <RootLayoutNav />; //check if stack
 }
 
 
@@ -73,21 +69,44 @@ function newUserCheck() { //check if new user or has previously logged in, show 
 
 
 
+
         //show startuppage if new or else show tab screens if already logged in
 function RootLayoutNav() {
-    const router = useRouter();
+   
 
     return (
     
         <Stack>
+          
             
 
-            <Stack.Screen name="startupPage" options={{
-                presentation: 'modal',
+            <Stack.Screen name="index" options={{
+              
                 title: 'Welcome',
-            }}
+                presentation: 'modal',
+                }} />
+                
+           
+           
+            <Stack.Screen name="(modals)/createAcc" options={{
 
-            />
+                title: 'Create an Account',
+                presentation: 'modal',
+            }} />
+
+            <Stack.Screen name="(modals)/login" options={{
+
+                title: 'Log in',
+                presentation: 'modal',
+            }} />
+            <Stack.Screen name="(modals)/makeBudget" options={{
+
+                title: 'Make Budget',
+                presentation: 'modal',
+            }} />
+
+
+
 
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 

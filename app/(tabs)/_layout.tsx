@@ -5,19 +5,11 @@ import { Tabs } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-
+import { Pressable } from "react-native";
 
 const Layout = () => {
 
     return (
-
-
-
-
-
-
-
-
 
 
 

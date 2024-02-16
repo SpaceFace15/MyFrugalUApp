@@ -4,9 +4,10 @@
     "\\app",
     "\\app\\(modals)",
     "\\app\\(tabs)",
+    "\\assets",
     "\\components",
     "\\constants"
   ],
-  "SelectedNode": "\\app\\startupPage.js",
+  "SelectedNode": "\\app\\index.js",
   "PreviewInSolutionExplorer": false
 }

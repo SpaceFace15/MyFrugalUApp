@@ -2,15 +2,15 @@ import { View, Text } from 'react-native'
 import React from 'react'
 
 
-const makeBudget = () => {
+const createLimit = () => {
 
     return (
         <View>
-            <Text>Make Budget</Text>
+            <Text>Create Limits</Text>
         </View>
 
 
     )
 }
 
-export default makeBudget
+export default createLimit
