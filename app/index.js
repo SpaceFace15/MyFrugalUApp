@@ -7,9 +7,47 @@ import Button from '@/components/Buttons';
 import { useNavigation } from '@react-navigation/native';
 
 const introImage = require('@/assets/intro.png');
+import { AntDesign } from '@expo/vector-icons';
+import { useState } from 'react'
+
+export const togglePass = () => {
+
+    const [password, setPassword] = useState(true);
+    const [textState, setTextState] = useState("Show Password");
+
+    const handlePasswordVisibility = () => {
+
+        if (textState === "Show Password") {
+
+            setTextState("Hide Password");
+
+            setPassword(!password);
+
+        } else if (textState === "Hide Password") {
+
+            setTextState("Show Password");
+
+            setPassword(!password);
+
+        }
+
+    };
 
 
- 
+    return {
+
+        password,
+
+        textState,
+
+        handlePasswordVisibility
+
+    }
+
+}
+
+
+
 const startupPage = () => {
     return (
         <View style={styles.container}>
@@ -46,7 +84,7 @@ const startupPage = () => {
             <View style={styles.defaultText}>
 
 
-                <Link replace href={'/(tabs)/Homepage'}> Already Have An Account? </Link>
+                <Link push href={'/(modals)/login'}> Already Have An Account? </Link>
 
             </View>
 
