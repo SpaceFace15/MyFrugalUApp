@@ -101,7 +101,7 @@ function RootLayoutNav() {
             }} />
             <Stack.Screen name="(modals)/makeBudget" options={{
 
-                title: 'Make Budget',
+                title: 'Create Your Budget',
                 presentation: 'modal',
             }} />
 

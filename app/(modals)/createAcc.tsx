@@ -59,7 +59,7 @@ const Layout = () => {
                 <Button color="#000"
                     title="Create Account"
 
-                    onPress={() => router.replace("/(tabs)/Homepage")}
+                    onPress={() => router.replace("/(modals)/makeBudget")}
             />
            
             </View>
