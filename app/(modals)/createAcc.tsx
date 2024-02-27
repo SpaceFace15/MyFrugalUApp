@@ -3,20 +3,82 @@ import { useNavigation, Link, router,useRouter } from "expo-router";
 import { StatusBar } from 'expo-status-bar';
 import {KeyboardAvoidingView,SafeAreaView, StyleSheet, Text, View, TextInput } from 'react-native';
 import ImageView from '@/components/ImageView';
-
+import { useState } from 'react'
 import { Pressable, Button } from "react-native";
 
 
-const navHome =()=> {
-    router.replace('/(tabs)/Homepage');
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+
+
+
+const togglePass = () => {
+
+    const [password, setPassword] = useState(true);
+    const [textState, setTextState] = useState("Show Password");
+
+    const handlePasswordVisibility = () => {
+
+        if (textState === "Show Password") {
+
+            setTextState("Hide Password");
+
+            setPassword(!password);
+
+        } else if (textState === "Hide Password") {
+
+            setTextState("Show Password");
+
+            setPassword(!password);
+
+        }
+
+    };
+
+
+    return {
+
+        password,
+
+        textState,
+
+        handlePasswordVisibility
+
+    }
 
 }
 
-
 const Layout = () => {
+    const { password, textState, handlePasswordVisibility } =
 
-    const router = useRouter();
-    const navigation = useNavigation();
+        togglePass();
+
+    const [Spasswords, setPasswords] = useState('');
+    const [Semail, setEmail] = useState('');
+   
+    const handleSignUp = () => {
+
+        const auth = getAuth();
+
+            createUserWithEmailAndPassword(auth,Semail, Spasswords)
+            .then((userCredential) => {
+
+                const user = userCredential.user;
+                console.log(user.email);
+
+            })
+            .catch(error => alert(error.message))
+
+
+    }
+
+     const moveToBudget = () => {
+
+        router.replace("/(modals)/makeBudget")
+
+    }
+
+    
+
 
     return (
 
@@ -34,23 +96,45 @@ const Layout = () => {
                 style={styles.textBox}
                     placeholder="Email"
                     placeholderTextColor="#000"
+                    value={Semail}
+                    onChangeText={text => setEmail(text)}
             />
             <TextInput
                 style={styles.textBox}
                     placeholder="Confirm Email"
                     placeholderTextColor="#000"
-            />
-            <TextInput
-                style={styles.textBox}          //Will make these private and censored
-                    placeholder="Password"
-                    placeholderTextColor="#000"
                     
             />
             <TextInput
                 style={styles.textBox}          //Will make these private and censored
+                    
+                    placeholder="Password"
+                    placeholderTextColor="#000"
+                    secureTextEntry={password}
+                    value={Spasswords}
+                    enablesReturnKeyAutomatically
+                    onChangeText={text => setPasswords(text)}
+                    
+                />
+                <View style={styles.passContainer}>
+                    <Pressable onPress={handlePasswordVisibility}>
+
+                        <Text>{textState}</Text>
+
+                    </Pressable>
+
+                </View>
+
+            <TextInput
+                style={styles.textBox}          //Will make these private and censored
                     placeholder="Confirm Password"
                     placeholderTextColor="#000"
-            />
+                    secureTextEntry={true}
+                    
+                    
+                />
+              
+
 
             </KeyboardAvoidingView>
 
@@ -59,7 +143,9 @@ const Layout = () => {
                 <Button color="#000"
                     title="Create Account"
 
-                    onPress={() => router.replace("/(modals)/makeBudget")}
+                    onPress={() => { handleSignUp(); moveToBudget(); }}
+
+                    
             />
            
             </View>
@@ -129,7 +215,12 @@ const styles = StyleSheet.create({
     },
     button: {
         color: "#000"
-    }
+    },
+    passContainer: {
+
+        paddingLeft: 20,
+
+    },
 
 });
 

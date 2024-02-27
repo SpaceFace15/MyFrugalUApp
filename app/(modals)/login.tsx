@@ -1,12 +1,53 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigation, Link, router, useRouter } from "expo-router";
 import { StatusBar } from 'expo-status-bar';
 import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View, TextInput } from 'react-native';
 import ImageView from '@/components/ImageView';
 import { useState }from 'react'
 import { Pressable, Button } from "react-native";
-import { togglePass } from '@/app/index';
+
 import { Entypo } from '@expo/vector-icons';
+
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+
+
+
+const togglePass = () => {
+
+    const [password, setPassword] = useState(true);
+    const [textState, setTextState] = useState("Show Password");
+
+    const handlePasswordVisibility = () => {
+
+        if (textState === "Show Password") {
+
+            setTextState("Hide Password");
+
+            setPassword(!password);
+
+        } else if (textState === "Hide Password") {
+
+            setTextState("Show Password");
+
+            setPassword(!password);
+
+        }
+
+    };
+
+
+    return {
+
+        password,
+
+        textState,
+
+        handlePasswordVisibility
+
+    }
+
+}
+
 
 
 
@@ -18,12 +59,36 @@ import { Entypo } from '@expo/vector-icons';
 
 const loginPage = () => {
 
+   
+
+
     const { password, textState, handlePasswordVisibility } =
 
         togglePass();
-
+    const auth = getAuth();
     const [passwords, setPasswords] = useState('');
+    const [email, setEmail] = useState('');
 
+ 
+   const handleLogin = () => {
+         auth 
+            signInWithEmailAndPassword(auth, email, passwords)
+            .then((userCredential) => {
+
+                const user = userCredential.user;
+                console.log(user.email);
+
+            })
+            .catch(error => alert(error.message))
+
+
+    }
+
+    const moveToHome = () => {
+
+        router.replace("/(tabs)/Homepage")
+
+    }
 
     
     return (
@@ -34,6 +99,9 @@ const loginPage = () => {
                     style={styles.textBox}
                     placeholder="Email"
                     placeholderTextColor="#000"
+                    value={email}
+                    onChangeText={text => setEmail(text)}
+                  
                 />
 
               
@@ -61,9 +129,8 @@ const loginPage = () => {
 
             <View style={styles.buttonContainer}>
                 <Button color="#000"
-                    title="Create Account"
-
-                    onPress={() => router.replace("/(tabs)/Homepage")}
+                    title="Log In"
+                    onPress={() => { handleLogin(); moveToHome(); }}
                 />
 
             </View>

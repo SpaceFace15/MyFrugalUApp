@@ -7,48 +7,57 @@ import Button from '@/components/Buttons';
 import { useNavigation } from '@react-navigation/native';
 
 const introImage = require('@/assets/intro.png');
-import { AntDesign } from '@expo/vector-icons';
-import { useState } from 'react'
-
-export const togglePass = () => {
-
-    const [password, setPassword] = useState(true);
-    const [textState, setTextState] = useState("Show Password");
-
-    const handlePasswordVisibility = () => {
-
-        if (textState === "Show Password") {
-
-            setTextState("Hide Password");
-
-            setPassword(!password);
-
-        } else if (textState === "Hide Password") {
-
-            setTextState("Show Password");
-
-            setPassword(!password);
-
-        }
-
-    };
+import { useEffect, useState } from 'react'
+import { initializeApp } from "firebase/app";
+import { getAuth, initializeAuth, getReactNativePersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
 
-    return {
 
-        password,
+export const firebaseConfig = {
 
-        textState,
+    apiKey: "AIzaSyDi1m5K3iJY3GcNBE4_6qn_34TP7BcuWbs",
 
-        handlePasswordVisibility
+    authDomain: "budgetu-d5c91.firebaseapp.com",
 
-    }
+    projectId: "budgetu-d5c91",
 
-}
+    storageBucket: "budgetu-d5c91.appspot.com",
+
+    messagingSenderId: "868850913789",
+
+    appId: "1:868850913789:web:208e1c85a337ee88e58994",
+
+    measurementId: "G-P0N3BDB0RF"
+
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+
+const auth = initializeAuth(app, {
+    persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+});
+
+
+
 
 
 
 const startupPage = () => {
+   
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                router.replace("/(tabs)/Homepage")
+            }
+        })
+        return unsubscribe;
+    }, [])
+
+
+
     return (
         <View style={styles.container}>
 
@@ -139,4 +148,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default startupPage
+   export default startupPage
