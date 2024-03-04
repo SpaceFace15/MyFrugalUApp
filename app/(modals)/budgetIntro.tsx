@@ -1,13 +1,13 @@
 
 import { Link, router } from "expo-router";
-import { Pressable } from "react-native";
+
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import ImageView from '@/components/ImageView';
-import Button from '@/components/Buttons';
-import { useNavigation } from '@react-navigation/native';
 
-const introImage = require('@/assets/intro.png');
+import { useNavigation } from '@react-navigation/native';
+import { Pressable, Button } from "react-native";
+const budgetImage = require('@/assets/budget.jpg');
 import { useEffect, useState } from 'react'
 import { initializeApp } from "firebase/app";
 import { getAuth, initializeAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
@@ -15,32 +15,43 @@ import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { getFirestore } from "firebase/firestore";
 
 
-
-const Budget = () => {
+const budgetIntro = () => {
 
     return (
-        <View>
-            <Text>Budget</Text>
+        <View style={styles.container}>
+
+            <View style={styles.imageContainer}>
+                <ImageView introImageSource={budgetImage} />
+            </View>
+
+
+            <View style={styles.container}>
+                <Text style={styles.welcomeText}>
+                    <Text>We'll need some  information to set up your personalized budget plan.</Text>
+
+                </Text>
+
+
+                
+            </View>
+
+            <View style={styles.buttonContainer}>
+                <Button color="#000"
+                    title="Create Budget"
+
+
+                    onPress={() => router.replace("/(modals)/makeBudget")}
+                />
+
+            </View>
 
 
 
-
-            <Link push href="/(modals)/budgetIntro" asChild>
-                <Pressable>
-                    <View style={styles.buttonContainer} >
-
-                        <Text>Set Budget</Text>
-
-                    </View>
-                </Pressable>
-            </Link>
-
-
+            
         </View>
-
-
-    )
+    );
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -57,7 +68,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         flex: 1,
         fontFamily: 'Arial',
-        fontSize: 26,
+        fontSize: 18,
         fontWeight: 'bold'
     },
     defaultText: {
@@ -84,4 +95,4 @@ const styles = StyleSheet.create({
 
 
 });
-export default Budget
+export default budgetIntro

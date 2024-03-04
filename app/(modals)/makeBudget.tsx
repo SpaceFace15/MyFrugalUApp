@@ -8,12 +8,44 @@ import React, { useState, useMemo } from 'react';
 import { Pressable, Button } from "react-native";
 import { CheckBox, Input } from "react-native-elements";
 import RadioGroup from 'react-native-radio-buttons-group';
+import { db, auth } from '@/app/index';
+import { Layout, userID } from '@/app/(modals)/createAcc';
 
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 //This page will only pop up if newUser == True  AND/OR directly link to show up after creating account
 
+
+
+
+
+
+
+
+
 const makeBudget = () => {
+   
 
 
+    const moveToHome = () => {
+
+        router.replace("/(tabs)/Homepage")
+
+    }
+
+
+    const submitData = async () => {
+        
+       await updateDoc(doc(db, "user", userID),{
+
+
+            frequency: freqency
+
+        })
+
+    }
+
+    
+    const [freqency, setFrequency] = useState('');
     const [selectedIncome, setSelectedIncome] = useState('option1');
     const [limit, setlimit] = useState('yes');
 
@@ -21,13 +53,16 @@ const makeBudget = () => {
         <View>
             <KeyboardAvoidingView behavior="padding">
 
-                <Text style={styles.defaultText}> Amount Made Per Pay Period </Text>
+                <Text style={styles.defaultText}> Amount Made Per Pay Period :  </Text>
 
 
                 <TextInput
                     style={styles.textBox}          //Will make these private and censored
                     placeholder="Dollar Amount"
                     placeholderTextColor="#000"
+                    value={freqency}
+                    onChangeText={text => setFrequency(text)}
+                    
                 />
 
 
@@ -39,9 +74,9 @@ const makeBudget = () => {
 
                     <View>
 
-                        <Text style={{ paddingLeft: 10} }>Select Income Frequency</Text>
+                        <Text style={{ paddingLeft: 10 }}>Select Income Frequency</Text>
 
-                       
+
                         <RadioButton.Group
                             onValueChange={(value) => setSelectedIncome(value)}
                             value={selectedIncome}
@@ -66,7 +101,7 @@ const makeBudget = () => {
                             </View>
 
 
-                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20}}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
                                 <RadioButton value="option4" color="black" />
                                 <Text>Monthly</Text>
                             </View>
@@ -101,7 +136,7 @@ const makeBudget = () => {
                             </View>
 
 
-                       
+
 
                         </RadioButton.Group>
 
@@ -121,12 +156,12 @@ const makeBudget = () => {
                 <Button color="#000"
                     title="Create Budget"
 
-
-                    onPress={() => router.replace("/(tabs)/Homepage")}
+                    onPress={() => { submitData(); moveToHome(); }}
+                    
                 />
 
             </View>
-           
+
 
 
 
@@ -141,7 +176,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
     },
-    
+
     defaultText: {
         paddingTop: 30
 
@@ -176,8 +211,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 3,
         paddingLeft: 10,
-        
-        
+
+
 
     },
     button: {

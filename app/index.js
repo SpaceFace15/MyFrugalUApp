@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { initializeApp } from "firebase/app";
 import { getAuth, initializeAuth, getReactNativePersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+import { getFirestore } from "firebase/firestore";
 
 
 
@@ -36,20 +37,24 @@ export const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 
-const auth = initializeAuth(app, {
+export const auth = initializeAuth(app, {
     persistence: getReactNativePersistence(ReactNativeAsyncStorage)
 });
-
+export const db = getFirestore(app);
 
 
 
 
 
 const startupPage = () => {
-   
+
+  
+
+    
     useEffect(() => {
+       auth
         const unsubscribe = auth.onAuthStateChanged(user => {
-            if (user) {
+            if (user ) {
                 router.replace("/(tabs)/Homepage")
             }
         })
@@ -80,13 +85,13 @@ const startupPage = () => {
             </View>
 
             <Link push href="/(modals)/createAcc" asChild>
-            <Pressable>
+                <Pressable>
                     <View style={styles.buttonContainer} >
 
                         <Text>Create An Account</Text>
-             
-            </View>
-            </Pressable>
+
+                    </View>
+                </Pressable>
             </Link>
 
 
@@ -133,7 +138,7 @@ const styles = StyleSheet.create({
         padding: 7,
         borderRadius: 8
     },
-     buttonContainer: {
+    buttonContainer: {
         backgroundColor: '#3383CD',
         width: 320,
         height: 68,
@@ -148,4 +153,4 @@ const styles = StyleSheet.create({
 
 });
 
-   export default startupPage
+export default startupPage

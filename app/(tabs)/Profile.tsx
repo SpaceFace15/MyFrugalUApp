@@ -7,14 +7,14 @@ import ImageView from '@/components/ImageView';
 import Button from '@/components/Buttons';
 import { useNavigation } from '@react-navigation/native';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
-
+import { db, auth } from '@/app/index';
 
 
 
 
 const Profile = () => {
 
-    const auth = getAuth();
+    
 
     const handleSignOut = () => {
         auth
@@ -33,8 +33,8 @@ const Profile = () => {
 
 
 
-            <View style={styles.container2 }>
-                <Text>  Name: </Text>
+            <View style={styles.container2}>
+                <Text>  Name: {auth.currentUser?.displayName}</Text>
                 <Text>  College: </Text>
                 <Text>  Email: {auth.currentUser?.email } </Text>
                 <Text>  Income Schedule: </Text>

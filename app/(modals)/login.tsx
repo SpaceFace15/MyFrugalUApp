@@ -3,13 +3,13 @@ import { useNavigation, Link, router, useRouter } from "expo-router";
 import { StatusBar } from 'expo-status-bar';
 import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View, TextInput } from 'react-native';
 import ImageView from '@/components/ImageView';
-import { useState }from 'react'
+import { useState } from 'react'
 import { Pressable, Button } from "react-native";
 
 import { Entypo } from '@expo/vector-icons';
 
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
-
+import { db, auth } from '@/app/index';
 
 
 const togglePass = () => {
@@ -50,29 +50,19 @@ const togglePass = () => {
 
 
 
-
-
-
-
-
-
-
 const loginPage = () => {
 
-   
 
 
-    const { password, textState, handlePasswordVisibility } =
 
-        togglePass();
-    const auth = getAuth();
+    const { password, textState, handlePasswordVisibility } = togglePass();
     const [passwords, setPasswords] = useState('');
     const [email, setEmail] = useState('');
 
- 
-   const handleLogin = () => {
-         auth 
-            signInWithEmailAndPassword(auth, email, passwords)
+
+    const handleLogin = () => {
+        auth
+        signInWithEmailAndPassword(auth, email, passwords)
             .then((userCredential) => {
 
                 const user = userCredential.user;
@@ -90,7 +80,7 @@ const loginPage = () => {
 
     }
 
-    
+
     return (
 
         <SafeAreaView>
@@ -101,10 +91,10 @@ const loginPage = () => {
                     placeholderTextColor="#000"
                     value={email}
                     onChangeText={text => setEmail(text)}
-                  
+
                 />
 
-              
+
                 <TextInput
                     style={styles.textBox}          //Will make these private and censored
                     placeholder="Password"
@@ -118,12 +108,12 @@ const loginPage = () => {
                 <View style={styles.passContainer}>
                     <Pressable onPress={handlePasswordVisibility}>
 
-                    <Text>{textState}</Text>
+                        <Text>{textState}</Text>
 
                     </Pressable>
 
-               </View>
-               
+                </View>
+
             </KeyboardAvoidingView>
 
 

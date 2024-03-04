@@ -5,9 +5,10 @@
     "\\app\\(modals)",
     "\\app\\(tabs)",
     "\\assets",
+    "\\assets\\images",
     "\\components",
     "\\constants"
   ],
-  "SelectedNode": "\\app\\(tabs)\\Homepage.tsx",
+  "SelectedNode": "\\app\\index.js",
   "PreviewInSolutionExplorer": false
 }

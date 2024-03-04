@@ -1,14 +1,14 @@
 import React from 'react'
-import { useNavigation, Link, router,useRouter } from "expo-router";
+import { useNavigation, Link, router, useRouter } from "expo-router";
 import { StatusBar } from 'expo-status-bar';
-import {KeyboardAvoidingView,SafeAreaView, StyleSheet, Text, View, TextInput } from 'react-native';
+import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View, TextInput } from 'react-native';
 import ImageView from '@/components/ImageView';
 import { useState } from 'react'
 import { Pressable, Button } from "react-native";
 
-
+import { db, auth } from '@/app/index';
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-
+import { doc, setDoc } from "firebase/firestore";
 
 
 const togglePass = () => {
@@ -47,23 +47,37 @@ const togglePass = () => {
 
 }
 
-const Layout = () => {
-    const { password, textState, handlePasswordVisibility } =
+export var userID: any;
 
-        togglePass();
+const moveToBudget = () => {
 
-    const [Spasswords, setPasswords] = useState('');
-    const [Semail, setEmail] = useState('');
-   
-    const handleSignUp = () => {
+    router.replace("/(tabs)/Homepage")
 
-        const auth = getAuth();
+}
 
-            createUserWithEmailAndPassword(auth,Semail, Spasswords)
+
+export const Layout = () => {
+
+    
+
+    const handleSignUp = async () => {
+        auth
+        createUserWithEmailAndPassword(auth, Semail, Spasswords)
+
+
             .then((userCredential) => {
 
                 const user = userCredential.user;
-                console.log(user.email);
+
+
+                setDoc(doc(db, "user", user.uid), {
+                    name: name,
+                    email: user.email,
+                    frequency: ""
+                });
+                userID = user.uid
+
+
 
             })
             .catch(error => alert(error.message))
@@ -71,50 +85,51 @@ const Layout = () => {
 
     }
 
-     const moveToBudget = () => {
 
-        router.replace("/(modals)/makeBudget")
 
-    }
 
-    
+    const { password, textState, handlePasswordVisibility } = togglePass();
+    const [Spasswords, setPasswords] = useState('');
+    const [Semail, setEmail] = useState('');
+    const [name, setName] = useState('');
+
 
 
     return (
 
-
-
         <SafeAreaView>
             <KeyboardAvoidingView behavior="padding">
-            <TextInput
-                style={styles.textBox}
+                <TextInput
+                    style={styles.textBox}
                     placeholder="Name"
-                    placeholderTextColor = "#000"
+                    value={name}
+                    onChangeText={text => setName(text)}
+                    placeholderTextColor="#000"
                 />
-            
-            <TextInput
-                style={styles.textBox}
+
+                <TextInput
+                    style={styles.textBox}
                     placeholder="Email"
                     placeholderTextColor="#000"
                     value={Semail}
                     onChangeText={text => setEmail(text)}
-            />
-            <TextInput
-                style={styles.textBox}
+                />
+                <TextInput
+                    style={styles.textBox}
                     placeholder="Confirm Email"
                     placeholderTextColor="#000"
-                    
-            />
-            <TextInput
-                style={styles.textBox}          //Will make these private and censored
-                    
+
+                />
+                <TextInput
+                    style={styles.textBox}          //Will make these private and censored
+
                     placeholder="Password"
                     placeholderTextColor="#000"
                     secureTextEntry={password}
                     value={Spasswords}
                     enablesReturnKeyAutomatically
                     onChangeText={text => setPasswords(text)}
-                    
+
                 />
                 <View style={styles.passContainer}>
                     <Pressable onPress={handlePasswordVisibility}>
@@ -125,15 +140,15 @@ const Layout = () => {
 
                 </View>
 
-            <TextInput
-                style={styles.textBox}          //Will make these private and censored
+                <TextInput
+                    style={styles.textBox}          //Will make these private and censored
                     placeholder="Confirm Password"
                     placeholderTextColor="#000"
                     secureTextEntry={true}
-                    
-                    
+
+
                 />
-              
+
 
 
             </KeyboardAvoidingView>
@@ -145,15 +160,15 @@ const Layout = () => {
 
                     onPress={() => { handleSignUp(); moveToBudget(); }}
 
-                    
-            />
-           
+
+                />
+
             </View>
 
-             
+
 
         </SafeAreaView>
-)
+    )
 }
 
 
@@ -201,7 +216,7 @@ const styles = StyleSheet.create({
 
     buttonContainer: {
         backgroundColor: '#3383CD',
-        
+
         width: 320,
         height: 68,
         borderRadius: 15,

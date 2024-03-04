@@ -22,6 +22,7 @@ const Layout = () => {
             />
 
             <Tabs.Screen name="Budgeting" options={{
+                
                 tabBarLabel: 'Budget',
                 tabBarIcon: ({ size }) =>
                     <MaterialIcons name='attach-money' size={size} />
