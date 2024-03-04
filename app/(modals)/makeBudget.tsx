@@ -38,16 +38,18 @@ const makeBudget = () => {
        await updateDoc(doc(db, "user", userID),{
 
 
-            frequency: freqency
+           amount: amount,
+           frequency: frequency,
+           limit: limit
 
         })
 
     }
 
     
-    const [freqency, setFrequency] = useState('');
-    const [selectedIncome, setSelectedIncome] = useState('option1');
-    const [limit, setlimit] = useState('yes');
+    const [amount, setAmount] = useState('');
+    const [frequency, setFrequency] = useState('');
+    const [limit, setLimit] = useState('');
 
     return (
         <View>
@@ -60,15 +62,10 @@ const makeBudget = () => {
                     style={styles.textBox}          //Will make these private and censored
                     placeholder="Dollar Amount"
                     placeholderTextColor="#000"
-                    value={freqency}
-                    onChangeText={text => setFrequency(text)}
+                    value={amount}
+                    onChangeText={text => setAmount(text)}
                     
                 />
-
-
-
-
-
 
                 <View>
 
@@ -78,31 +75,31 @@ const makeBudget = () => {
 
 
                         <RadioButton.Group
-                            onValueChange={(value) => setSelectedIncome(value)}
-                            value={selectedIncome}
+                            onValueChange={(value) => setFrequency(value)}
+                            value={frequency}
                         >
 
 
 
                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
-                                <RadioButton value="option1" color="black" />
+                                <RadioButton value="Weekly" color="black" />
                                 <Text>Weekly</Text>
                             </View>
 
                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
-                                <RadioButton value="option2" color="black" />
+                                <RadioButton value="Bi-Weekly" color="black" />
                                 <Text>Bi-Weekly</Text>
                             </View>
 
 
                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
-                                <RadioButton value="option3" color="black" />
+                                <RadioButton value="Semi-Monthly" color="black" />
                                 <Text>Semi-Monthly</Text>
                             </View>
 
 
                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
-                                <RadioButton value="option4" color="black" />
+                                <RadioButton value="Monthly" color="black" />
                                 <Text>Monthly</Text>
                             </View>
 
@@ -119,7 +116,7 @@ const makeBudget = () => {
 
 
                         <RadioButton.Group
-                            onValueChange={(value) => setlimit(value)}
+                            onValueChange={(value) => setLimit(value)}
                             value={limit}
                         >
 

@@ -1,6 +1,6 @@
 
 import { Link, router } from "expo-router";
-import { Pressable } from "react-native";
+import { Pressable, SafeAreaView } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import ImageView from '@/components/ImageView';
@@ -19,12 +19,55 @@ import { getFirestore } from "firebase/firestore";
 const Budget = () => {
 
     return (
-        <View>
-            <Text>Budget</Text>
+
+        <SafeAreaView>
+            <View>
+                <View>
+                    <Text> Current Budget: </Text>
+                </View>
 
 
 
 
+                <View style={styles.imageContainer}> 
+
+                    
+
+                </View>
+
+
+
+
+                <View>
+                    <Text style={styles.welcomeText} > Expenses </Text>
+            </View>
+
+                <View style={styles.container} >
+
+                    <Text>Expenses: </Text>
+
+                </View>
+                <View style={styles.container} >
+
+                    <Text>Expenses: </Text>
+
+                </View>
+                <View style={styles.container} >
+
+                    <Text>Expenses: </Text>
+
+                </View>
+                <View style={styles.container} >
+
+                    <Text>Expenses: </Text>
+
+                </View>
+
+
+                
+
+            </View>
+                
             <Link push href="/(modals)/budgetIntro" asChild>
                 <Pressable>
                     <View style={styles.buttonContainer} >
@@ -34,9 +77,10 @@ const Budget = () => {
                     </View>
                 </Pressable>
             </Link>
+            
 
-
-        </View>
+            
+            </SafeAreaView>
 
 
     )
@@ -46,6 +90,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
+        borderWidth: .6,
+        borderColor: "grey",
+        padding: 20,
+        borderRadius: 10,
+        marginTop: 10
     },
 
     imageContainer: {
@@ -54,10 +103,9 @@ const styles = StyleSheet.create({
     },
 
     welcomeText: {
-        textAlign: 'center',
-        flex: 1,
+       
         fontFamily: 'Arial',
-        fontSize: 26,
+        fontSize: 20,
         fontWeight: 'bold'
     },
     defaultText: {
