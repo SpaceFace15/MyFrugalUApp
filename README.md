@@ -1,4 +1,4 @@
-# BudgetU Student Budget App
+# FrugalU Student Budget App
 
 
 
