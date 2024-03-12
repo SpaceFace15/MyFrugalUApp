@@ -15,6 +15,8 @@ import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { getFirestore } from "firebase/firestore";
 
 
+// show this page first when user presses budget tab only if hasBudget = false , at the end of making budget, will be changed to true
+
 const budgetIntro = () => {
 
     return (

@@ -2,6 +2,7 @@
   "ExpandedNodes": [
     "",
     "\\app",
+    "\\app\\(expensetype)",
     "\\app\\(modals)",
     "\\app\\(tabs)",
     "\\assets",
@@ -9,6 +10,6 @@
     "\\components",
     "\\constants"
   ],
-  "SelectedNode": "\\app\\index.js",
+  "SelectedNode": "\\app\\(modals)\\addExpense.tsx",
   "PreviewInSolutionExplorer": false
 }

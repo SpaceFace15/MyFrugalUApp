@@ -1,12 +1,10 @@
-
 import { Link, router } from "expo-router";
 import { Pressable, SafeAreaView } from "react-native";
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View,ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import ImageView from '@/components/ImageView';
 import Button from '@/components/Buttons';
 import { useNavigation } from '@react-navigation/native';
-
 const introImage = require('@/assets/intro.png');
 import { useEffect, useState } from 'react'
 import { initializeApp } from "firebase/app";
@@ -16,35 +14,25 @@ import { getFirestore } from "firebase/firestore";
 
 
 
-const Budget = () => {
+const Housing = () => {
 
     return (
 
 
 
-        //push to budgetintro if hasbudget=false
 
-        <SafeAreaView>
+        <SafeAreaView >
             <ScrollView>
                 <View>
-                    <Text style={styles.welcomeText}> Current Budget: </Text>
+                    <Text style={styles.welcomeText}> Housing Expenses: </Text>
                 </View>
 
 
 
 
-                <View style={styles.imageContainer}> 
-
-                    
-
-                </View>
 
 
 
-
-                <View>
-                    <Text style={styles.welcomeText} > Expenses </Text>
-            </View>
 
                 <View style={styles.container} >
 
@@ -54,82 +42,35 @@ const Budget = () => {
 
 
 
-                <Link push href="/(expensetype)/foodTab" asChild>
-                    <Pressable>
-                <View style={styles.container} >
+            </ScrollView>
 
-                    <Text style={styles.itemText} > Food </Text>
-
-                </View>
-
-
-                </Pressable>
-                </Link>
-
-
-                <View style={styles.container} >
-
-                    <Text style={styles.itemText} > Transportation </Text>
-
-                </View>
-
-
-                <View style={styles.container} >
-
-                    <Text style={styles.itemText} > Tuition </Text>
-
-                </View>
-
-
-                <Link push href="/(expensetype)/housingTab" asChild>
-                    <Pressable>
-                        <View style={styles.container} >
-
-                            <Text style={styles.itemText} > Housing </Text>
-
-                        </View>
-
-
-                    </Pressable>
-                </Link>
-
-
-
-                <View style={styles.container} >
-
-                    <Text style={styles.itemText} > Other </Text>
-
-                </View>
-
-                </ScrollView>
-                
-            <Link push href="/(modals)/budgetIntro" asChild>
+            <Link push href="/(modals)/addExpense" asChild>
                 <Pressable>
                     <View style={styles.buttonContainer} >
 
-                        <Text>Set Budget</Text>
+                        <Text>Add Expense</Text>
 
                     </View>
                 </Pressable>
             </Link>
-            
 
-            
-            </SafeAreaView>
+
+
+        </SafeAreaView>
 
 
     )
 }
 const styles = StyleSheet.create({
     container: {
-        
+
         backgroundColor: '#fff',
         borderWidth: .6,
         borderColor: "grey",
         padding: 20,
         borderRadius: 10,
         marginTop: 10,
-        textAlign : "left",
+        textAlign: "left",
     },
 
     imageContainer: {
@@ -138,7 +79,7 @@ const styles = StyleSheet.create({
     },
 
     welcomeText: {
-       
+
         fontFamily: 'Arial',
         fontSize: 20,
         fontWeight: 'bold'
@@ -147,7 +88,7 @@ const styles = StyleSheet.create({
 
         fontFamily: 'Arial',
         fontSize: 20,
-       
+
     },
     defaultText: {
         textAlign: 'center',
@@ -173,4 +114,4 @@ const styles = StyleSheet.create({
 
 
 });
-export default Budget
+export default Housing

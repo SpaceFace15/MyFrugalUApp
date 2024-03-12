@@ -73,7 +73,7 @@ export const Layout = () => {
                 setDoc(doc(db, "user", user.uid), {
                     name: name,
                     email: user.email,
-                    amount: ""
+                    
                 });
                 userID = user.uid
 

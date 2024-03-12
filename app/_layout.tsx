@@ -109,11 +109,25 @@ function RootLayoutNav() {
                 title: 'Create Your Budget',
                 presentation: 'modal',
             }} />
+            <Stack.Screen name="(modals)/addExpense" options={{
+
+                title: 'Add an Expense',
+                presentation: 'modal',
+            }} />
 
 
+            <Stack.Screen name="(tabs)" options={{
+                headerShown: false,
+                
+            }} />
 
 
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="(expensetype)/foodTab" options={{
+
+                headerShown: false,
+               
+            }} />
+        
 
         </Stack>
 
