@@ -8,10 +8,10 @@ import Button from '@/components/Buttons';
 import { useNavigation } from '@react-navigation/native';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 import { db, auth } from '@/app/index';
+import { Layout, userID } from '@/app/(modals)/createAcc';
 
 
-
-
+//USE SAME LOGIC, ADD INFO WITH FLATLIST AND ARRAY (retrieve one user doc)
 const Profile = () => {
 
     
@@ -31,14 +31,15 @@ const Profile = () => {
             <Text style={styles.welcomeText}>
                 Profile Information</Text>
 
+            
 
-
-            <View style={styles.container2}>
+            <View style={styles.container2}> 
                 <Text>  Name: {auth.currentUser?.displayName}</Text>
                 <Text>  College: </Text>
                 <Text>  Email: {auth.currentUser?.email } </Text>
                 <Text>  Income Schedule: </Text>
                 <Text>  Limits: </Text>
+                <Text>  UID: {auth.currentUser?.uid} </Text>
             </View>
 
 

@@ -13,16 +13,26 @@ import { initializeApp } from "firebase/app";
 import { getAuth, initializeAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { getFirestore } from "firebase/firestore";
+import { db, auth, } from '@/app/index';
+import { Layout, userID } from '@/app/(modals)/createAcc';
+
+import { doc, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
+import { collection, query, where, Firestore } from "firebase/firestore";
+
+
+
 
 
 
 const Budget = () => {
 
+   
+
     return (
 
 
 
-        //push to budgetintro if hasbudget=false
+      
 
         <SafeAreaView>
             <ScrollView>
@@ -67,18 +77,30 @@ const Budget = () => {
                 </Link>
 
 
-                <View style={styles.container} >
+                <Link push href="/(expensetype)/transportationTab" asChild>
+                    <Pressable>
+                        <View style={styles.container} >
 
-                    <Text style={styles.itemText} > Transportation </Text>
+                            <Text style={styles.itemText} > Transportation </Text>
 
-                </View>
+                        </View>
 
 
-                <View style={styles.container} >
+                    </Pressable>
+                </Link>
 
-                    <Text style={styles.itemText} > Tuition </Text>
 
-                </View>
+                <Link push href="/(expensetype)/tuitionTab" asChild>
+                    <Pressable>
+                        <View style={styles.container} >
+
+                            <Text style={styles.itemText} > Tuition </Text>
+
+                        </View>
+
+
+                    </Pressable>
+                </Link>
 
 
                 <Link push href="/(expensetype)/housingTab" asChild>
@@ -95,23 +117,21 @@ const Budget = () => {
 
 
 
-                <View style={styles.container} >
+                <Link push href="/(expensetype)/otherTab" asChild>
+                    <Pressable>
+                        <View style={styles.container} >
 
-                    <Text style={styles.itemText} > Other </Text>
+                            <Text style={styles.itemText} > Other </Text>
 
-                </View>
+                        </View>
+
+
+                    </Pressable>
+                </Link>
 
                 </ScrollView>
                 
-            <Link push href="/(modals)/budgetIntro" asChild>
-                <Pressable>
-                    <View style={styles.buttonContainer} >
-
-                        <Text>Set Budget</Text>
-
-                    </View>
-                </Pressable>
-            </Link>
+           
             
 
             

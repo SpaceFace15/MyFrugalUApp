@@ -1,15 +1,15 @@
 import React from 'react'
 import { useNavigation, Link, router, useRouter } from "expo-router";
 import { StatusBar } from 'expo-status-bar';
-import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View, TextInput } from 'react-native';
+import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
 import ImageView from '@/components/ImageView';
 import { useState } from 'react'
 import { Pressable, Button } from "react-native";
 
 import { db, auth } from '@/app/index';
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-
+import { doc, setDoc, updateDoc, addDoc, collection} from "firebase/firestore";
+import { RadioButton } from 'react-native-paper';
 
 const togglePass = () => {
 
@@ -49,7 +49,7 @@ const togglePass = () => {
 
 export var userID: any;
 
-const moveToBudget = () => {
+const moveToHome = () => {
 
     router.replace("/(tabs)/Homepage")
 
@@ -58,7 +58,6 @@ const moveToBudget = () => {
 
 export const Layout = () => {
 
-    
 
     const handleSignUp = async () => {
         auth
@@ -71,11 +70,19 @@ export const Layout = () => {
 
 
                 setDoc(doc(db, "user", user.uid), {
+
                     name: name,
+                    college: college,
                     email: user.email,
+                    amount: amount,
+                    frequency: frequency,
+                    limit: limit
                     
                 });
-                userID = user.uid
+
+             
+
+               userID = user.uid
 
 
 
@@ -87,18 +94,23 @@ export const Layout = () => {
 
 
 
-
+    const [college, setCollege] = useState('');
     const { password, textState, handlePasswordVisibility } = togglePass();
     const [Spasswords, setPasswords] = useState('');
     const [Semail, setEmail] = useState('');
     const [name, setName] = useState('');
 
-
+    const [amount, setAmount] = useState('');
+    const [frequency, setFrequency] = useState('');
+    const [limit, setLimit] = useState('');
 
     return (
 
         <SafeAreaView>
-            <KeyboardAvoidingView behavior="padding">
+            <ScrollView>
+
+
+            
                 <TextInput
                     style={styles.textBox}
                     placeholder="Name"
@@ -120,6 +132,16 @@ export const Layout = () => {
                     placeholderTextColor="#000"
 
                 />
+
+                <TextInput
+                    style={styles.textBox}
+                    placeholder="College"
+                    value={college}
+                    onChangeText={text => setCollege(text)}
+                    placeholderTextColor="#000"
+                />
+
+
                 <TextInput
                     style={styles.textBox}          //Will make these private and censored
 
@@ -134,7 +156,7 @@ export const Layout = () => {
                 <View style={styles.passContainer}>
                     <Pressable onPress={handlePasswordVisibility}>
 
-                        <Text>{textState}</Text>
+                            <Text style={styles.defaultText2}>{textState}</Text>
 
                     </Pressable>
 
@@ -148,24 +170,117 @@ export const Layout = () => {
 
 
                 />
+                    
+
+                    <View>
+                        <Text style={styles.defaultText}> Amount Made Per Pay Period :  </Text>
+
+
+                        <TextInput
+                            style={styles.textBox}          //Will make these private and censored
+                            placeholder="Dollar Amount"
+                            placeholderTextColor="#000"
+                            value={amount}
+                            onChangeText={text => setAmount(text)}
+
+                        />
+                    </View>
+                     
+
+                <View>
+                        
+                    <View>
+
+                        <Text style={{ paddingLeft: 10 }}>Select Income Frequency</Text>
+
+
+                        <RadioButton.Group
+                            onValueChange={(value) => setFrequency(value)}
+                            value={frequency}
+                        >
 
 
 
-            </KeyboardAvoidingView>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+                                <RadioButton value="Weekly" color="black" />
+                                <Text>Weekly</Text>
+                            </View>
 
+                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+                                <RadioButton value="Bi-Weekly" color="black" />
+                                <Text>Bi-Weekly</Text>
+                            </View>
+
+
+                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+                                <RadioButton value="Semi-Monthly" color="black" />
+                                <Text>Semi-Monthly</Text>
+                            </View>
+
+
+                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+                                <RadioButton value="Monthly" color="black" />
+                                <Text>Monthly</Text>
+                            </View>
+
+
+                        </RadioButton.Group>
+
+
+                    </View>
+
+
+                    <View>
+
+                        <Text style={{ paddingLeft: 10 }}>Would You Like To Set Budget Limits? </Text>
+
+
+                        <RadioButton.Group
+                            onValueChange={(value) => setLimit(value)}
+                            value={limit}
+                        >
+
+
+
+                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+                                <RadioButton value="yes" color="black" />
+                                <Text>Yes</Text>
+                            </View>
+
+                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+                                <RadioButton value="no" color="black" />
+                                <Text>No</Text>
+                            </View>
+
+
+
+
+                        </RadioButton.Group>
+
+
+                    </View>
+
+
+
+                </View>
+
+  
+
+          
+            
 
             <View style={styles.buttonContainer}>
                 <Button color="#000"
                     title="Create Account"
 
-                    onPress={() => { handleSignUp(); moveToBudget(); }}
+                    onPress={() => { handleSignUp();  moveToHome();  }}
 
 
                 />
 
             </View>
 
-
+            </ScrollView>
 
         </SafeAreaView>
     )
@@ -194,7 +309,8 @@ const styles = StyleSheet.create({
     },
     defaultText: {
         textAlign: 'center',
-        paddingBottom: 50
+        paddingBottom: 10,
+        fontWeight: 'bold'
 
     },
     input: {
@@ -235,8 +351,40 @@ const styles = StyleSheet.create({
 
         paddingLeft: 20,
 
+    }, 
+        radioGroup: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            marginTop: 20,
+            borderRadius: 8,
+            backgroundColor: 'white',
+            padding: 16,
+            elevation: 4,
+            shadowColor: '#000',
+            shadowOffset: {
+                width: 0,
+                height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+        },
+        radioButton: {
+            flexDirection: 'row',
+            alignItems: 'center',
+        },
+        radioLabel: {
+            marginLeft: 8,
+            fontSize: 16,
+            color: '#333',
     },
+    defaultText2: {
 
-});
+      
+        fontWeight: 'bold'
+    }
+
+    });
+
 
 export default Layout

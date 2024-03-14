@@ -29,7 +29,7 @@ const budgetIntro = () => {
 
             <View style={styles.container}>
                 <Text style={styles.welcomeText}>
-                    <Text>We'll need some  information to set up your personalized budget plan.</Text>
+                    <Text>We'll need some account and personal information to set up your personalized budget plan.</Text>
 
                 </Text>
 
@@ -39,10 +39,10 @@ const budgetIntro = () => {
 
             <View style={styles.buttonContainer}>
                 <Button color="#000"
-                    title="Create Budget"
+                    title="Next"
 
 
-                    onPress={() => router.replace("/(modals)/makeBudget")}
+                    onPress={() => router.replace("/(modals)/createAcc")}
                 />
 
             </View>

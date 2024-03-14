@@ -32,21 +32,25 @@ const expense = () => {
     }
 
 
-    //Make subcollections for each expense (each expense should reference UID of user)
+    // Expense Type > user ID (doc) > expenses > DocID (randomly generated) > expense data
     // change console rules after 30 days?
 
     const submitData = async () => { // adds new expense under foodexpense
 
-        await addDoc(collection(db, exType), {
-
-            userID : userID,
-            desc: desc,
-            exAmount: exAmount,
-            exType: exType
-            
 
 
-        })
+
+       await  addDoc(collection(db, "expenses"), {
+           
+           exType: exType,
+           exAmount: exAmount,
+           desc: desc,
+           expenseOwner: auth.currentUser?.uid
+
+        });
+        
+
+
 
     }
 

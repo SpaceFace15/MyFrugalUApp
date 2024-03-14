@@ -46,6 +46,7 @@ export const db = getFirestore(app);
 
 
 
+
 const startupPage = () => {
 
   
@@ -84,7 +85,7 @@ const startupPage = () => {
                 </Text>
             </View>
 
-            <Link push href="/(modals)/createAcc" asChild>
+            <Link push href="/(modals)/budgetIntro" asChild>
                 <Pressable>
                     <View style={styles.buttonContainer} >
 
