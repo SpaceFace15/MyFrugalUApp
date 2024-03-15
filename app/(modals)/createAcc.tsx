@@ -76,7 +76,8 @@ export const Layout = () => {
                     email: user.email,
                     amount: amount,
                     frequency: frequency,
-                    limit: limit
+                    limit: limit,
+                    UserUID: user.uid
                     
                 });
 

@@ -12,7 +12,7 @@ import RadioGroup from 'react-native-radio-buttons-group';
 import { db, auth } from '@/app/index';
 import { Layout, userID } from '@/app/(modals)/createAcc';
 
-import { doc, setDoc, updateDoc, addDoc, collection } from "firebase/firestore";
+import { doc, setDoc, updateDoc, addDoc, collection, where } from "firebase/firestore";
 
 
 
@@ -49,8 +49,7 @@ const expense = () => {
 
         });
         
-
-
+      
 
     }
 

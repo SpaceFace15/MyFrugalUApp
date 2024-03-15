@@ -45,8 +45,6 @@ export const db = getFirestore(app);
 
 
 
-
-
 const startupPage = () => {
 
   
