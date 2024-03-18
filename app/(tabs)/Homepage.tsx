@@ -20,7 +20,7 @@ import { Layout, userID } from '@/app/(modals)/createAcc';
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 
-const Home = () => {
+const Home = () => { //will contain recent expenses , graphic, and largest expenses so far? (or largest category)
 
 
     
@@ -28,9 +28,13 @@ const Home = () => {
     return (
         <View>
             <Text>Homepage</Text>
+
+
+
+
         </View>
 
-
+      
     )
 }
 

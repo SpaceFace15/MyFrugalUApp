@@ -9,12 +9,45 @@ import { useNavigation } from '@react-navigation/native';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 import { db, auth } from '@/app/index';
 import { Layout, userID } from '@/app/(modals)/createAcc';
+import { collection, query, where, Firestore } from "firebase/firestore";
+import { doc, setDoc, updateDoc, onSnapshot, getDoc } from "firebase/firestore";
+import { useEffect, useState, useLayoutEffect } from 'react'
+
+
 
 
 //USE SAME LOGIC, ADD INFO WITH FLATLIST AND ARRAY (retrieve one user doc)
 const Profile = () => {
 
-    
+
+    const [college, setcollege] = useState("");
+    const [frequency, setfrequency] = useState("");
+    const [haslimit, sethaslimit] = useState("");
+    const [name, setname] = useState("");
+
+    const profilecol = collection(db, "user");
+    const profileq = query(profilecol, where("UserUID", "==", auth.currentUser?.uid))
+
+
+    onSnapshot(profileq, (snapshot) => { 
+        var col = "";
+        var freq = "";
+        var limit = "";
+        var n = "";
+        snapshot.docs.forEach((doc) => {
+
+            col = doc.data().college
+            freq = doc.data().frequency
+            limit = doc.data().limit
+            n = doc.data().name
+        })
+        setname(n)
+        setcollege(col)
+        setfrequency(freq)
+        sethaslimit(limit)
+
+    })
+
 
     const handleSignOut = () => {
         auth
@@ -34,11 +67,11 @@ const Profile = () => {
             
 
             <View style={styles.container2}> 
-                <Text>  Name: {auth.currentUser?.displayName}</Text>
-                <Text>  College: </Text>
+                <Text>  Name: {name}</Text>
+                <Text>  College:{college} </Text>
                 <Text>  Email: {auth.currentUser?.email } </Text>
-                <Text>  Income Schedule: </Text>
-                <Text>  Limits: </Text>
+                <Text>  Income Schedule: {frequency} </Text>
+                <Text>  Limits: {haslimit} </Text>
                 <Text>  UID: {auth.currentUser?.uid} </Text>
             </View>
 
@@ -85,7 +118,7 @@ const styles = StyleSheet.create({
 
     welcomeText: {
         textAlign: 'center',
-        fontFamily: 'Arial',
+        
         fontSize: 22,
         fontWeight: 'bold'
     },

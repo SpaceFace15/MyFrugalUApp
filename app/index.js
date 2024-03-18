@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     welcomeText: {
         textAlign: 'center',
         flex: 1,
-        fontFamily: 'Arial',
+      
         fontSize: 26,
         fontWeight: 'bold'
     },

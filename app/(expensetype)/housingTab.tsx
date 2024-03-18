@@ -127,13 +127,13 @@ const styles = StyleSheet.create({
 
     welcomeText: {
 
-        fontFamily: 'Arial',
+       
         fontSize: 20,
         fontWeight: 'bold'
     },
     itemText: {
 
-        fontFamily: 'Arial',
+        
         fontSize: 20,
 
     },

@@ -139,13 +139,13 @@ const styles = StyleSheet.create({
 
     welcomeText: {
 
-        fontFamily: 'Arial',
+        
         fontSize: 20,
         fontWeight: 'bold'
     },
     itemText: {
 
-        fontFamily: 'Arial',
+        
         fontSize: 20,
 
     },
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
 
     itemText2: {
 
-        fontFamily: 'Arial',
+        
         fontSize: 20,
         
 
