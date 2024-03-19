@@ -1,14 +1,14 @@
 import React from 'react'
 import { useNavigation, Link, router, useRouter } from "expo-router";
 import { StatusBar } from 'expo-status-bar';
-import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
+import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View, TextInput, ScrollView, Alert } from 'react-native';
 import ImageView from '@/components/ImageView';
 import { useState } from 'react'
 import { Pressable, Button } from "react-native";
 
 import { db, auth } from '@/app/index';
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { doc, setDoc, updateDoc, addDoc, collection} from "firebase/firestore";
+import { doc, setDoc, updateDoc, addDoc, collection } from "firebase/firestore";
 import { RadioButton } from 'react-native-paper';
 
 const togglePass = () => {
@@ -60,6 +60,19 @@ export const Layout = () => {
 
 
     const handleSignUp = async () => {
+        // These lines check the inputs of the user to make sure passwords match, emails match, and the password is long enough
+        if (Spasswords !== Cpasswords) {
+            Alert.alert('Error', 'Passwords do not match.');
+            return;
+        }
+        else if (Semail !== Cemail) {
+            Alert.alert('Error', 'Email does not match.');
+            return;
+        }
+        else if (Spasswords.length < 8) {
+            Alert.alert('Error', 'Password must be at least 8 characters.');
+            return;
+        }
         auth
         createUserWithEmailAndPassword(auth, Semail, Spasswords)
 
@@ -78,32 +91,33 @@ export const Layout = () => {
                     frequency: frequency,
                     limit: limit,
                     UserUID: user.uid
-                    
+
                 });
 
-             
 
-               userID = user.uid
+
+                userID = user.uid
 
 
 
             })
             .catch(error => alert(error.message))
 
-
+        moveToHome();
     }
-
-
+    
 
     const [college, setCollege] = useState('');
     const { password, textState, handlePasswordVisibility } = togglePass();
     const [Spasswords, setPasswords] = useState('');
     const [Semail, setEmail] = useState('');
     const [name, setName] = useState('');
-
+    const [Cpasswords, setCPasswords] = useState('')
+    const [Cemail, setCEmail] = useState('')
     const [amount, setAmount] = useState('');
     const [frequency, setFrequency] = useState('');
     const [limit, setLimit] = useState('');
+
 
     return (
 
@@ -111,7 +125,7 @@ export const Layout = () => {
             <ScrollView>
 
 
-            
+
                 <TextInput
                     style={styles.textBox}
                     placeholder="Name"
@@ -131,8 +145,10 @@ export const Layout = () => {
                     style={styles.textBox}
                     placeholder="Confirm Email"
                     placeholderTextColor="#000"
-
+                    value={Cemail}
+                    onChangeText={text => setCEmail(text)}
                 />
+                
 
                 <TextInput
                     style={styles.textBox}
@@ -157,7 +173,7 @@ export const Layout = () => {
                 <View style={styles.passContainer}>
                     <Pressable onPress={handlePasswordVisibility}>
 
-                            <Text style={styles.defaultText2}>{textState}</Text>
+                        <Text style={styles.defaultText2}>{textState}</Text>
 
                     </Pressable>
 
@@ -168,28 +184,29 @@ export const Layout = () => {
                     placeholder="Confirm Password"
                     placeholderTextColor="#000"
                     secureTextEntry={true}
-
+                    value={Cpasswords}
+                    onChangeText={text => setCPasswords(text)}
 
                 />
-                    
 
-                    <View>
-                        <Text style={styles.defaultText}> Amount Made Per Pay Period :  </Text>
-
-
-                        <TextInput
-                            style={styles.textBox}          //Will make these private and censored
-                            placeholder="Dollar Amount"
-                            placeholderTextColor="#000"
-                            value={amount}
-                            onChangeText={text => setAmount(text)}
-
-                        />
-                    </View>
-                     
 
                 <View>
-                        
+                    <Text style={styles.defaultText}> Amount Made Per Pay Period :  </Text>
+
+
+                    <TextInput
+                        style={styles.textBox}          //Will make these private and censored
+                        placeholder="Dollar Amount"
+                        placeholderTextColor="#000"
+                        value={amount}
+                        onChangeText={text => setAmount(text)}
+
+                    />
+                </View>
+
+
+                <View>
+
                     <View>
 
                         <Text style={{ paddingLeft: 10 }}>Select Income Frequency</Text>
@@ -265,21 +282,21 @@ export const Layout = () => {
 
                 </View>
 
-  
-
-          
-            
-
-            <View style={styles.buttonContainer}>
-                <Button color="#000"
-                    title="Create Account"
-
-                    onPress={() => { handleSignUp();  moveToHome();  }}
 
 
-                />
 
-            </View>
+
+
+                <View style={styles.buttonContainer}>
+                    <Button color="#000"
+                        title="Create Account"
+
+                        onPress={() => { handleSignUp(); }}
+
+
+                    />
+
+                </View>
 
             </ScrollView>
 
@@ -304,7 +321,7 @@ const styles = StyleSheet.create({
     welcomeText: {
         textAlign: 'center',
         flex: 1,
-        
+        fontFamily: 'Arial',
         fontSize: 26,
         fontWeight: 'bold'
     },
@@ -352,40 +369,40 @@ const styles = StyleSheet.create({
 
         paddingLeft: 20,
 
-    }, 
-        radioGroup: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-around',
-            marginTop: 20,
-            borderRadius: 8,
-            backgroundColor: 'white',
-            padding: 16,
-            elevation: 4,
-            shadowColor: '#000',
-            shadowOffset: {
-                width: 0,
-                height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
+    },
+    radioGroup: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        marginTop: 20,
+        borderRadius: 8,
+        backgroundColor: 'white',
+        padding: 16,
+        elevation: 4,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
         },
-        radioButton: {
-            flexDirection: 'row',
-            alignItems: 'center',
-        },
-        radioLabel: {
-            marginLeft: 8,
-            fontSize: 16,
-            color: '#333',
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+    },
+    radioButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    radioLabel: {
+        marginLeft: 8,
+        fontSize: 16,
+        color: '#333',
     },
     defaultText2: {
 
-      
+
         fontWeight: 'bold'
     }
 
-    });
+});
 
 
 export default Layout
