@@ -126,6 +126,14 @@ const loginPage = () => {
             </View>
 
 
+            <View style={styles.defaultText}>
+
+
+                <Link push href={'/(modals)/createAcc'}> Don't have an account? </Link>
+
+            </View>
+
+
 
         </SafeAreaView>
     )

@@ -5,7 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
 import ImageView from '@/components/ImageView';
 import Button from '@/components/Buttons';
-import { useNavigation } from '@react-navigation/native';
+
 
 const introImage = require('@/assets/intro.png');
 import { useEffect, useState, useLayoutEffect } from 'react'
@@ -19,12 +19,11 @@ import { Layout, userID } from '@/app/(modals)/createAcc';
 import { doc, setDoc, updateDoc, onSnapshot, getDoc } from "firebase/firestore";
 import { collection, query, where, Firestore } from "firebase/firestore";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { PieChart } from "react-native-gifted-charts"
 
 
 
-
-
-
+// add color dot component to expense categories
 
 
 
@@ -35,7 +34,6 @@ import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const Budget = () => {
 
-   
 
 
 
@@ -45,8 +43,19 @@ const Budget = () => {
     const [housingTotals, sethousingTotals] = useState<number>();
     const [otherTotals, setotherTotals] = useState<number>();
     const [budget, setbudget] = useState<number>();
-    const [avaliableCash, setavaliableCash]= useState<number>();
+    const [avaliableCash, setavaliableCash]= useState<number>(); // might change to string so that rounds correctly? (with tofixed())
     const [frequency, setfrequency] = useState("");
+
+
+    // sets percentages for chart input
+    const [budgetpercent, setbudgetpercent] = useState<number>();
+    const [foodpercent, setfoodpercent] = useState<number>(); 
+    const [transpercent, settranspercent] = useState<number>();
+    const [tuitionpercent, settuitionpercent] = useState<number>();
+    const [housingpercent, sethousingpercent] = useState<number>();
+    const [otherpercent, setotherpercent] = useState<number>();
+
+
 
 
 
@@ -78,6 +87,30 @@ const Budget = () => {
     const budgetq = query(budgetCol, where("UserUID", "==", auth.currentUser?.uid))
 
 
+
+    const pieData = [
+
+        {
+            value: budgetpercent,
+            color: '#009FFF',
+            gradientCenterColor: '#006DFF',
+
+        },
+
+        { value: foodpercent, color: '#93FCF8', gradientCenterColor: '#3BE9DE' },
+
+        { value: transpercent, color: '#BDB2FA', gradientCenterColor: '#8F80F3' },
+
+        { value: tuitionpercent, color: '#FFA5BA', gradientCenterColor: '#FF7F97' },
+
+        { value: housingpercent, color: '#5bff33', gradientCenterColor: '#FF7F97' },
+
+        { value: otherpercent, color: '#ff9933', gradientCenterColor: '#FF7F97' },
+
+    ];
+
+
+
     onSnapshot(budgetq, (snapshot) => { //if budget goes below 0 , do (something)
         var convert = 0;
         var freq = "";
@@ -97,6 +130,12 @@ const Budget = () => {
         setavaliableCash(convertTotal);
 
 
+        var percentTotal = (convertTotal / 10)
+        percentTotal = Number(percentTotal.toFixed(2))
+       
+        setbudgetpercent(percentTotal);
+
+
     })
    
 
@@ -114,19 +153,21 @@ const Budget = () => {
 
               
 
-                var rounding = parseFloat(doc.data().exAmount).toFixed(2);
+                var rounding = parseFloat(doc.data().exAmount);
 
-                const convert = parseFloat(rounding);
+                rounding = Math.round(rounding * 1e2) / 1e2;
 
-                snap += convert
+                snap += rounding
 
-                snap.toFixed(2);
-              
-              
             })
+            snap  = Math.round(snap * 1e2) / 1e2;
             
 
             setfoodTotals(snap);
+
+            var foodpercentage = (snap / 10)
+            foodpercentage = Number(foodpercentage.toFixed(2))
+            setfoodpercent(foodpercentage);
 
         })
 
@@ -137,19 +178,20 @@ const Budget = () => {
 
 
 
-                var rounding = parseFloat(doc.data().exAmount).toFixed(2);
+                var rounding = parseFloat(doc.data().exAmount);
 
-                const convert = parseFloat(rounding);
+                rounding = Math.round(rounding * 1e2) / 1e2;
 
-                snap += convert
-
-                snap.toFixed(2);
-
+                snap += rounding
 
             })
-
+            snap = Math.round(snap * 1e2) / 1e2;
 
             settransTotals(snap);
+
+            var transportationpercentage = (snap / 10)
+            transportationpercentage = Number(transportationpercentage.toFixed(2))
+            settranspercent(transportationpercentage);
 
         })
 
@@ -160,19 +202,21 @@ const Budget = () => {
 
 
 
-                var rounding = parseFloat(doc.data().exAmount).toFixed(2);
+                var rounding = parseFloat(doc.data().exAmount);
 
-                const convert = parseFloat(rounding);
+                rounding = Math.round(rounding * 1e2) / 1e2;
 
-                snap += convert
-
-                snap.toFixed(2);
-
+                snap += rounding
 
             })
+            snap = Math.round(snap * 1e2) / 1e2;
 
 
             settuitionTotals(snap);
+
+            var tuitionpercentage = (snap / 10)
+            tuitionpercentage = Number(tuitionpercentage.toFixed(2))
+            settuitionpercent(tuitionpercentage);
 
         })
 
@@ -184,19 +228,21 @@ const Budget = () => {
 
 
 
-                var rounding = parseFloat(doc.data().exAmount).toFixed(2);
+                var rounding = parseFloat(doc.data().exAmount);
 
-                const convert = parseFloat(rounding);
+                rounding = Math.round(rounding * 1e2) / 1e2;
 
-                snap += convert
-
-                snap.toFixed(2);
-
+                snap += rounding
 
             })
+            snap = Math.round(snap * 1e2) / 1e2;
 
 
             sethousingTotals(snap);
+
+            var housingpercentage = (snap / 10)
+            housingpercentage = Number(housingpercentage.toFixed(2))
+            sethousingpercent(housingpercentage);
 
         })
 
@@ -209,20 +255,21 @@ const Budget = () => {
 
 
 
-                var rounding = parseFloat(doc.data().exAmount).toFixed(2);
+                var rounding = parseFloat(doc.data().exAmount);
 
-                const convert = parseFloat(rounding);
+                rounding = Math.round(rounding * 1e2) / 1e2;
 
-                snap += convert
-
-                snap.toFixed(2);
-
+                snap += rounding
 
             })
+            snap = Math.round(snap * 1e2) / 1e2;
 
 
             setotherTotals(snap);
 
+            var otherpercentage = (snap / 10)
+            otherpercentage = Number(otherpercentage.toFixed(2))
+            setotherpercent(otherpercentage);
         })
 
         
@@ -234,30 +281,146 @@ const Budget = () => {
     }, [])
 
 
+    const renderDot = (color: any) => {
+        return (
+            <View
+                style={{
+                    height: 10,
+                    width: 10,
+                    borderRadius: 5,
+                    backgroundColor: color,
+                    marginRight: 10,
+                }}
+            />
+        );
+    };
 
-    
+const legendComponent = () => {
+        return (
+            <>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        marginBottom: 10,
+                    }}>
+                    <View
+                        style={{
 
-    
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            width: 180,
+                            marginRight: 40,
+                        }}>
 
+                        {renderDot('#009FFF')}
+                        <Text style={{ color: 'black', fontWeight: 'bold' }}>Free to Spend: {budgetpercent}% </Text>
+                    </View>
 
-   return (
+                    <View
+                        style={{ flexDirection: 'row', alignItems: 'center', width: 120 }}>
+                        {renderDot('#93FCF8')}
+                        <Text style={{ color: 'black', fontWeight: 'bold' }}>Food: {foodpercent}% </Text>
+                    </View>
 
-      
+                </View>
 
-        <SafeAreaView>
-            <ScrollView>
-                <View>
-                   <Text style={styles.welcomeText}> Current Budget: $ {budget}</Text>
-                   <Text style={styles.defaultText}> {frequency}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 10, }}>
+
+                    <View
+
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            width: 180,
+                            marginRight: 40,
+                        }}>
+
+                        {renderDot('#BDB2FA')}
+                        <Text style={{ color: 'black', fontWeight: 'bold' }}>Transportation: {transpercent}%</Text>
+
+                    </View>
+
+                    <View
+                        style={{ flexDirection: 'row', alignItems: 'center', width: 120 }}>
+                        {renderDot('#FFA5BA')}
+                        <Text style={{ color: 'black', fontWeight: 'bold' }}>Tuition: {tuitionpercent}%</Text>
+                    </View>
                 </View>
 
 
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 10, }}>
 
+                    <View
+
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            width: 180,
+                            marginRight: 40,
+                        }}>
+
+                        {renderDot('#5bff33')}
+                        <Text style={{ color: 'black', fontWeight: 'bold' }}>Housing: {housingpercent}%</Text>
+
+                    </View>
+
+                    <View
+                        style={{ flexDirection: 'row', alignItems: 'center', width: 120 }}>
+                        {renderDot('#ff9933')}
+                        <Text style={{ color: 'black', fontWeight: 'bold' }}>Other: {otherpercent}%</Text>
+                    </View>
+
+                </View>
+            </>
+        );
+  };
+
+
+
+
+
+
+  return (
+
+        <SafeAreaView>
+            <ScrollView>
+            
+                  <View
+                      style={{
+                          margin: 20,
+                          padding: 16,
+                          borderRadius: 20,
+                      backgroundColor: '#255489',
+                      }}>
+                  <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
+                      Budget ({frequency}) :
+                      </Text>
 
                 <View style={styles.imageContainer}> 
-
-                    
-
+                   <PieChart
+                       data={pieData}
+                       donut
+                       showGradient
+                       sectionAutoFocus
+                       radius={90}
+                       innerRadius={60}
+                       innerCircleColor={'#232B5D'}
+                       centerLabelComponent={() => {
+                           return (
+                               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                   <Text
+                                       style={{ fontSize: 22, color: 'white', fontWeight: 'bold' }}>
+                                       ${budget}
+                                  </Text>
+                                   <Text style={{ fontSize: 14, color: 'white' }}>Budget</Text>
+                               </View>
+                           );
+                      }}
+                          />
+                      </View>
+                  {legendComponent()}
+                  
                 </View>
 
 
@@ -398,7 +561,9 @@ const styles = StyleSheet.create({
 
     imageContainer: {
         flex: 1,
-        paddingTop: 40,
+        paddingTop: 20,
+        alignItems: 'center',
+        paddingBottom: 15,
     },
 
     welcomeText: {

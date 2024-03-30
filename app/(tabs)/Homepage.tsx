@@ -5,7 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import ImageView from '@/components/ImageView';
 import Button from '@/components/Buttons';
-import { useNavigation } from '@react-navigation/native';
+
 
 const introImage = require('@/assets/intro.png');
 import { useEffect, useState } from 'react'
